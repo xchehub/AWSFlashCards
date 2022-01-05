@@ -19,10 +19,43 @@ public abstract class DrawerLayoutActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle, mTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayout());
+
+        // Enable action bar app and icon
+        // Behaving it as toggle button.
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        // Draw layout
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList.setOnItemClickListener(new DrawerListener());
+
+        // Init
+        init();
+
+        mDrawerList.setAdapter(getAdapter());
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_navigation_drawer,
+                R.string.app_name,
+                R.string.app_name
+        ) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
     }
 
     @Override
