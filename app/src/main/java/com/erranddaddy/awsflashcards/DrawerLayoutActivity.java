@@ -3,6 +3,7 @@ package com.erranddaddy.awsflashcards;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,24 +43,34 @@ public abstract class DrawerLayoutActivity extends Activity {
 
         mDrawerList.setAdapter(getAdapter());
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_navigation_drawer,
+//                R.drawable.ic_navigation_drawer,
                 R.string.app_name,
                 R.string.app_name
         ) {
             @Override
             public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();
             }
         };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        if(savedInstanceState == null) {
+            displayView(0, null);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -71,18 +82,33 @@ public abstract class DrawerLayoutActivity extends Activity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstance has occurred
+        mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     private class DrawerListener implements AdapterView.OnItemClickListener {
 
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        public void onItemClick(AdapterView<?> adapterView, View view, final int position, long id) {
+            /**
+             * A handler with a postDelayed is used so it only changes fragments once the drawer is
+             * already closed. This can be adjusted if the timing is not right.
+             * Similar behavior that most Google apps offers.
+             */
+            mDrawerLayout.closeDrawer(mDrawerList);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    displayView(position, null);
+                }
+            }, 300);
         }
     }
 
