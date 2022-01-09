@@ -1,76 +1,50 @@
 package com.erranddaddy.awsflashcards;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.BaseAdapter;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.erranddaddy.awsflashcards.navDrawer.NavDrawerAdapter;
+import com.erranddaddy.awsflashcards.navDrawer.NavDrawerItem;
 
-import android.view.View;
+import java.util.ArrayList;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+public class MainActivity extends DrawerLayoutActivity {
 
-import com.erranddaddy.awsflashcards.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
-public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    private NavDrawerAdapter mNavDrawerAdapter;
+    private ArrayList<NavDrawerItem> navDrawerItems;
+    private String[] navMenuTitles;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void init() {
+        // Retrieve the typedArray from the XML. Notice the weird Syntax "obtain"
+        TypedArray navIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        // Retrieve the titles
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_titles);
+        // Initialize the ArrayList
+        navDrawerItems = new ArrayList<NavDrawerItem>();
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Add items to the ArrayList of NavDrawer items.
+        for(int i = 0; i < navMenuTitles.length; i++) {
+            navDrawerItems.add(new NavDrawerItem(navMenuTitles[i], navIcons.getDrawable(i)));
         }
 
-        return super.onOptionsItemSelected(item);
+        // An typed array can be recycled to avoid waste of System Resources.
+        // Though we only have 2 items, it is still a good practice.
+        navIcons.recycle();
+
+        mNavDrawerAdapter = new NavDrawerAdapter(this, navDrawerItems);
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void displayView(int position, Bundle fragmentBundle) {
+
+    }
+
+    @Override
+    protected BaseAdapter getAdapter() {
+        return mNavDrawerAdapter;
     }
 }
+O
