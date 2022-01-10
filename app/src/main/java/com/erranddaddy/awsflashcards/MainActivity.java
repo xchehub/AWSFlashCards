@@ -47,4 +47,3 @@ public class MainActivity extends DrawerLayoutActivity {
         return mNavDrawerAdapter;
     }
 }
-O
