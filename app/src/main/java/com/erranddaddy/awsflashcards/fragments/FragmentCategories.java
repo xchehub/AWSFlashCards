@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import com.erranddaddy.awsflashcards.R;
 import com.erranddaddy.awsflashcards.fab.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
