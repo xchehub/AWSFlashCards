@@ -43,6 +43,23 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     fileTree(dir: 'libs', include: ['*.jar']) // Will compile all the Libraries inside the 'libs' folder
-//    'com.github.gabrielemariotti.cards:library:1.9.1' // Very good library to use cards
-    'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+////    'com.github.gabrielemariotti.cards:library:1.9.1' // Very good library to use cards
+//    'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
+//    //Optional for built-in cards
+//    'com.github.gabrielemariotti.cards:cardslib-cards:2.1.0'
+//
+//    //Optional for RecyclerView
+//    'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+//
+//    //Optional for staggered grid view
+//    'com.github.gabrielemariotti.cards:cardslib-extra-staggeredgrid:2.1.0'
+//
+//    //Optional for drag and drop
+//    'com.github.gabrielemariotti.cards:cardslib-extra-dragdrop:2.1.0'
+
+    //Core card library
+    'com.github.gabrielemariotti.cards:library:1.9.1'
+
+    //Extra card library, it is required only if you want to use integrations with other libraries
+    'com.github.gabrielemariotti.cards:library-extra:1.9.1'
 }
