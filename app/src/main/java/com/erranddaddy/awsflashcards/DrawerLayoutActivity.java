@@ -158,6 +158,9 @@ public abstract class DrawerLayoutActivity extends Activity {
         return mDrawerLayout;
     }
 
+    public String getLogTag() {
+        return LOG_TAG;
+    }
     /**
      * Method to be Overridden that will return an Adapter that extends Base Adapter.
      * The adapter will them be used by the Drawer Layout.
